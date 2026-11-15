@@ -78,6 +78,12 @@ python_keywords:
     lambda, none, nonlocal, not, or, pass, raise, return, "true", try, while,
     with, yield]
 
+ci:
+  type: bool
+  help: Generate a GitHub Actions CI workflow (lint, then test)?
+  default: false
+  when: "{{ language == 'python' }}"
+
 package_name:
   type: str
   when: false
