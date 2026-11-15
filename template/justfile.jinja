@@ -1,0 +1,24 @@
+# Entry points shared by every project: fmt, lint (check only), test, check.
+# `dev` is defined only by variants that have something to run.
+
+{% if language == 'python' -%}
+fmt:
+    uv run ruff format
+    uv run ruff check --fix
+
+lint:
+    uv run ruff format --check
+    uv run ruff check
+    uv run pyright
+
+test:
+    uv run pytest
+{%- else -%}
+{% for recipe in ['fmt', 'lint', 'test'] -%}
+{{ recipe }}:
+    @echo "The {{ language }} toolchain is not set up in this template yet." >&2; exit 1
+
+{% endfor -%}
+{%- endif %}
+
+check: lint test

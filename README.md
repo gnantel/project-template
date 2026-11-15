@@ -22,6 +22,13 @@ uvx copier copy --trust --defaults \
 The new directory is a git repository on `main` with one initial commit. Its
 `.copier-answers.yml` records your answers; keep it committed.
 
+## Day-to-day commands
+
+Every project has a `justfile` with the same entry points, whatever the language:
+`just fmt`, `just lint` (check only), `just test` and `just check` (lint + test).
+Variants add `just dev` when the project has something to run. Run `just --list`
+to see what a project offers.
+
 ## Publish it on GitHub
 
 The template already creates the `main` branch, so only the remote is left. From
