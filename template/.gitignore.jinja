@@ -1,0 +1,23 @@
+.idea/
+.vscode/
+.DS_Store
+.env
+{%- if language == 'python' %}
+
+__pycache__/
+*.py[cod]
+.venv/
+uv.lock
+.pytest_cache/
+.ruff_cache/
+.pyright/
+dist/
+build/
+*.egg-info/
+{%- elif language == 'typescript' %}
+{# TypeScript ignores go here #}
+{%- elif language == 'rust' %}
+{# Rust ignores go here #}
+{%- elif language == 'java' %}
+{# Java ignores go here #}
+{%- endif %}
