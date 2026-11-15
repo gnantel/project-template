@@ -9,6 +9,8 @@ cd "$CLAUDE_PROJECT_DIR"
 case "$edited_file" in
 {%- if language == 'python' %}
   *.py|*.pyi) uv run ruff format --quiet "$edited_file" ;;
+{%- elif language == 'rust' %}
+  *.rs) rustfmt --config skip_children=true "$edited_file" ;;
 {%- endif %}
   *) ;;
 esac

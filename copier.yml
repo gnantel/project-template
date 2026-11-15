@@ -5,6 +5,8 @@ _tasks:
   - command: "[ -e .git ] || (git init -b main && git add -A && git commit -m 'Initial commit from project-template')"
   - command: "uv run lefthook install"
     when: "{{ language == 'python' }}"
+  - command: "mise trust && mise install && mise exec -- lefthook install"
+    when: "{{ language == 'rust' }}"
 
 project_name:
   type: str
@@ -82,7 +84,7 @@ ci:
   type: bool
   help: Generate a GitHub Actions CI workflow (lint, then test)?
   default: false
-  when: "{{ language == 'python' }}"
+  when: "{{ language in ['python', 'rust'] }}"
 
 package_name:
   type: str

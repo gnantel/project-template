@@ -5,7 +5,8 @@ uv = "0.13"
 {%- elif language == 'typescript' %}
 {# TypeScript tool versions go here #}
 {%- elif language == 'rust' %}
-{# Rust tool versions go here #}
+rust = { version = "1.99", components = "rustfmt,clippy" }
+lefthook = "2"
 {%- elif language == 'java' %}
 {# Java tool versions go here #}
 {%- endif %}

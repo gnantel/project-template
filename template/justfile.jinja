@@ -13,6 +13,16 @@ lint:
 
 test:
     uv run pytest
+{%- elif language == 'rust' -%}
+fmt:
+    cargo fmt
+
+lint:
+    cargo fmt --check
+    cargo clippy --all-targets -- -D warnings
+
+test:
+    if cargo nextest --version >/dev/null 2>&1; then cargo nextest run && cargo test --doc; else cargo test; fi
 {%- else -%}
 {% for recipe in ['fmt', 'lint', 'test'] -%}
 {{ recipe }}:

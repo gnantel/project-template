@@ -1,0 +1,15 @@
+# Git hooks: format staged files before commit, clippy and tests before push.
+
+pre-commit:
+  jobs:
+    - name: format
+      glob: "*.rs"
+      run: rustfmt --config skip_children=true {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: lint
+      run: cargo clippy --all-targets -- -D warnings
+    - name: test
+      run: if cargo nextest --version >/dev/null 2>&1; then cargo nextest run && cargo test --doc; else cargo test; fi
