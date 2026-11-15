@@ -2,11 +2,18 @@ _subdirectory: template
 _min_copier_version: "9.0.0"
 
 _tasks:
+  # TypeScript runs two tasks around the shared initial commit: pnpm install comes
+  # first so pnpm-lock.yaml is in that commit, and lefthook install comes after it
+  # because it needs the .git directory the shared task creates.
+  - command: "mise trust && mise install && mise exec -- pnpm install"
+    when: "{{ language == 'typescript' }}"
   - command: "[ -e .git ] || (git init -b main && git add -A && git commit -m 'Initial commit from project-template')"
   - command: "uv run lefthook install"
     when: "{{ language == 'python' }}"
   - command: "mise trust && mise install && mise exec -- lefthook install"
     when: "{{ language == 'rust' }}"
+  - command: "mise exec -- pnpm exec lefthook install"
+    when: "{{ language == 'typescript' }}"
 
 project_name:
   type: str
@@ -84,7 +91,7 @@ ci:
   type: bool
   help: Generate a GitHub Actions CI workflow (lint, then test)?
   default: false
-  when: "{{ language in ['python', 'rust'] }}"
+  when: "{{ language in ['python', 'rust', 'typescript'] }}"
 
 package_name:
   type: str

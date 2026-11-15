@@ -3,7 +3,8 @@
 python = "3.12"
 uv = "0.13"
 {%- elif language == 'typescript' %}
-{# TypeScript tool versions go here #}
+node = "24"
+pnpm = "12"
 {%- elif language == 'rust' %}
 rust = { version = "1.99", components = "rustfmt,clippy" }
 lefthook = "2"

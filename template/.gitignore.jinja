@@ -15,7 +15,11 @@ dist/
 build/
 *.egg-info/
 {%- elif language == 'typescript' %}
-{# TypeScript ignores go here #}
+
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
 {%- elif language == 'rust' %}
 
 target/

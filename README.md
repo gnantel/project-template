@@ -43,13 +43,20 @@ formatted with rustfmt and re-staged. Before each push, `cargo clippy -D
 warnings` and the tests (`cargo nextest` when installed, else `cargo test`)
 must pass.
 
+TypeScript projects get the same hooks, installed after `pnpm install` when the
+project is generated. Before each commit Biome formats and lints the staged
+files and re-stages fixes; before each push, `tsc --noEmit` and vitest must pass.
+After cloning, run `pnpm install && pnpm exec lefthook install`.
+Generating a TypeScript project needs [mise](https://mise.jdx.dev), which installs the
+Node and pnpm versions in the project's `.mise.toml` for the setup tasks.
+
 ## Claude Code setup
 
-Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python and Rust variants have a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
+Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python, Rust and TypeScript variants have a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
 
 ## Optional CI
 
-For Python and Rust projects, the `ci` question (default `false`) adds
+For Python, Rust and TypeScript projects, the `ci` question (default `false`) adds
 `.github/workflows/ci.yml`. A `lint` job runs `just lint` first and the `test`
 job, which needs it, runs `just test`, so a lint failure costs no test minutes.
 

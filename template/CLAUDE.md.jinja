@@ -15,6 +15,11 @@
 - Format: `just fmt`
 - Lint (format check, clippy with warnings as errors): `just lint`
 - Test (nextest when installed, else `cargo test`): `just test`
+{%- elif language == 'typescript' -%}
+- Install: `pnpm install`
+- Format: `just fmt`
+- Lint (Biome, tsc): `just lint`
+- Test: `just test`
 - Lint and test: `just check`
 {%- else -%}
 - Install: TODO
@@ -32,6 +37,9 @@ finishing a turn (see `.claude/settings.json`).
 {%- elif language == 'rust' -%}
 Claude formats each edited `.rs` file with rustfmt and runs `just lint` before
 finishing a turn (see `.claude/settings.json`).
+{%- elif language == 'typescript' -%}
+Claude formats each edited TypeScript, JavaScript or JSON file with Biome and
+runs `just lint` before finishing a turn (see `.claude/settings.json`).
 {%- else -%}
 Automatic formatting and the lint check before finishing a turn are not configured for {{ language }} yet; see
 `.claude/hooks/`.
@@ -49,6 +57,10 @@ and tests together and exposes a small surface.
 - `src/<feature>/`: one module per feature, `mod.rs` exposing its surface
 - `src/<feature>/foo_tests.rs`: unit tests for `foo.rs`, loaded from it with
   `#[cfg(test)] #[path = "foo_tests.rs"] mod tests;`
+{%- elif language == 'typescript' -%}
+- `src/<feature>/`: one directory per feature, with its `*.test.ts` files
+  beside the code they test
+- `src/index.ts`: the public surface
 {%- else -%}
 - TODO: describe the feature layout
 {%- endif %}
