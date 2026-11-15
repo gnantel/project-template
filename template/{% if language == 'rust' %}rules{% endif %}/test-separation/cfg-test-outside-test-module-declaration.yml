@@ -1,0 +1,21 @@
+# Allows #[cfg(test)] only on an out-of-line test module declaration.
+id: rust-cfg-test-outside-test-module-declaration
+language: rust
+severity: error
+message: "#[cfg(test)] belongs only on a test module declaration: #[cfg(test)] #[path = \"foo_tests.rs\"] mod tests;"
+rule:
+  kind: attribute_item
+  regex: '^#\[(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*cfg(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*\((\s|/\*[\s\S]*?\*/|//[^\n]*\n)*test(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*,?(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*\)(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*\]$'
+  not:
+    precedes:
+      kind: mod_item
+      not:
+        has:
+          field: body
+          kind: declaration_list
+      stopBy:
+        not:
+          any:
+            - kind: attribute_item
+            - kind: line_comment
+            - kind: block_comment

@@ -1,0 +1,3 @@
+# ast-grep configuration: every rule file under rules/ runs in `just lint`.
+ruleDirs:
+  - rules

@@ -7,9 +7,11 @@ node = "24"
 pnpm = "12"
 {%- elif language == 'rust' %}
 rust = { version = "1.99", components = "rustfmt,clippy" }
+ast-grep = "0.51"
 lefthook = "2"
 {%- elif language == 'java' %}
 java = "temurin-21"
 maven = "3.9"
+ast-grep = "0.51"
 lefthook = "2"
 {%- endif %}

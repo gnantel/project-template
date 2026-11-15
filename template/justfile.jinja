@@ -18,6 +18,7 @@ fmt:
     cargo fmt
 
 lint:
+    ast-grep scan
     cargo fmt --check
     cargo clippy --all-targets -- -D warnings
 
@@ -38,6 +39,7 @@ fmt:
     mvn -B -q spotless:apply
 
 lint:
+    ast-grep scan
     mvn -B -q spotless:check test-compile
 
 test:

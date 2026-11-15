@@ -13,7 +13,7 @@
 {%- elif language == 'rust' -%}
 - Build: `cargo build`
 - Format: `just fmt`
-- Lint (format check, clippy with warnings as errors): `just lint`
+- Lint (format check, clippy with warnings as errors, ast-grep rules in `rules/`): `just lint`
 - Test (nextest when installed, else `cargo test`): `just test`
 {%- elif language == 'typescript' -%}
 - Install: `pnpm install`
@@ -23,7 +23,7 @@
 - Lint and test: `just check`
 {%- elif language == 'java' -%}
 - Format: `just fmt`
-- Lint (format check, compile with Error Prone): `just lint`
+- Lint (format check, compile with Error Prone, ast-grep rules in `rules/`): `just lint`
 - Test: `just test`
 - Lint and test: `just check`
 {%- else -%}

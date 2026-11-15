@@ -1,0 +1,19 @@
+# Forbids test modules with inline bodies: tests live in separate files.
+id: rust-inline-test-module
+language: rust
+severity: error
+message: "Move the test module body into foo_tests.rs and declare it with #[path]."
+rule:
+  kind: mod_item
+  has:
+    field: body
+    kind: declaration_list
+  follows:
+    kind: attribute_item
+    regex: '^#\[(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*cfg(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*\((\s|/\*[\s\S]*?\*/|//[^\n]*\n)*test(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*,?(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*\)(\s|/\*[\s\S]*?\*/|//[^\n]*\n)*\]$'
+    stopBy:
+      not:
+        any:
+          - kind: attribute_item
+          - kind: line_comment
+          - kind: block_comment
