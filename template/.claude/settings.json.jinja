@@ -40,12 +40,11 @@
     ]
   },
   "enabledPlugins": {
-{%- if spring_boot %}
-    "spring-boot@personal": true,
-{%- endif %}
-{%- if project_kind == 'service' %}
-    "operational-readiness@personal": true,
-{%- endif %}
-    "coding-standards@personal": true
+{%- set plugins = [] %}
+{%- if spring_boot %}{% set _ = plugins.append('spring-boot@personal') %}{% endif %}
+{%- if project_kind == 'service' %}{% set _ = plugins.append('operational-readiness@personal') %}{% endif %}
+{%- for plugin in plugins %}
+    "{{ plugin }}": true{{ "," if not loop.last }}
+{%- endfor %}
   }
 }
