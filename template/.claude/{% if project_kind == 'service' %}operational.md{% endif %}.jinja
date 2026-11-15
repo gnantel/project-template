@@ -1,0 +1,11 @@
+# Operational conventions
+
+{% if language == 'python' -%}
+- Metrics: prometheus-client; Prometheus naming (`snake_case`, `_total`, `_seconds`).
+- Logging: structlog with key-value fields; never log emails or names.
+- Resilience: httpx with explicit timeouts; tenacity for retries of idempotent calls.
+{%- else -%}
+- Metrics: TODO
+- Logging: TODO
+- Resilience: TODO
+{%- endif %}

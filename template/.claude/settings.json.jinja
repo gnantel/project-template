@@ -1,0 +1,51 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(just:*)",
+{%- if language == 'python' %}
+      "Bash(uv sync:*)",
+      "Bash(uv run ruff:*)",
+      "Bash(uv run pyright:*)",
+      "Bash(uv run pytest:*)",
+{%- endif %}
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git status:*)",
+      "Bash(git merge-base:*)",
+      "Bash(git rev-parse:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format-edited-file.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint-before-stop.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+{%- if spring_boot %}
+    "spring-boot@personal": true,
+{%- endif %}
+{%- if project_kind == 'service' %}
+    "operational-readiness@personal": true,
+{%- endif %}
+    "coding-standards@personal": true
+  }
+}
