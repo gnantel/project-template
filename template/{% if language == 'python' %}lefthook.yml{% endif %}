@@ -1,0 +1,19 @@
+# Git hooks: fast checks on staged files before commit, typecheck and tests before push.
+
+pre-commit:
+  jobs:
+    - name: format
+      glob: "*.py"
+      run: uv run ruff format {staged_files}
+      stage_fixed: true
+    - name: lint
+      glob: "*.py"
+      run: uv run ruff check --fix {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: typecheck
+      run: uv run pyright
+    - name: test
+      run: uv run pytest
