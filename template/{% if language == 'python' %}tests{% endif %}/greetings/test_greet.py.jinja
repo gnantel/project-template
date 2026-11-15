@@ -1,0 +1,7 @@
+"""Tests for building greeting messages."""
+
+from {{ package_name }}.greetings.greet import greet
+
+
+def test_greet_addresses_the_given_name() -> None:
+    assert greet("Ada") == "Hello, Ada!"

@@ -34,3 +34,16 @@ spring_boot:
   help: Use Spring Boot?
   default: false
   when: "{{ language == 'java' }}"
+
+package_name:
+  type: str
+  when: false
+  default: >-
+    {% set name = project_name | lower | regex_replace('[^a-z0-9]+', '_') | trim('_') -%}
+    {% if not name -%}
+    project
+    {%- elif name[:1] in '0123456789' or name in ['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield'] -%}
+    p_{{ name }}
+    {%- else -%}
+    {{ name }}
+    {%- endif %}
