@@ -11,6 +11,8 @@ case "$edited_file" in
   *.py|*.pyi) uv run ruff format --quiet "$edited_file" ;;
 {%- elif language == 'rust' %}
   *.rs) rustfmt --config skip_children=true "$edited_file" ;;
+{%- elif language == 'typescript' %}
+  *.ts|*.tsx|*.js|*.jsx|*.mjs|*.cjs|*.json|*.jsonc) pnpm exec biome format --write "$edited_file" >/dev/null ;;
 {%- endif %}
   *) ;;
 esac

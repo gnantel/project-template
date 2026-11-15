@@ -1,0 +1,3 @@
+# Lefthook's postinstall is declined: the template runs `lefthook install` itself.
+allowBuilds:
+  lefthook: false

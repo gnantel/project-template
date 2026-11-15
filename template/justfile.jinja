@@ -23,6 +23,16 @@ lint:
 
 test:
     if cargo nextest --version >/dev/null 2>&1; then cargo nextest run && cargo test --doc; else cargo test; fi
+{%- elif language == 'typescript' -%}
+fmt:
+    pnpm exec biome check --write
+
+lint:
+    pnpm exec biome check
+    pnpm exec tsc --noEmit
+
+test:
+    pnpm exec vitest run
 {%- else -%}
 {% for recipe in ['fmt', 'lint', 'test'] -%}
 {{ recipe }}:
