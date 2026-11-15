@@ -1,3 +1,53 @@
 # project-template
 
 A copier template that gives every new project the same workflow, whatever the language.
+
+## Create a project
+
+```sh
+uvx copier copy --trust gh:gnantel/project-template my-project
+```
+
+The `--trust` flag is needed because the template runs a task (the initial git commit). Copier asks for the project name, description, language (`python`, `typescript`,
+`rust`, `java`), project kind (`library`, `application`, `service`) and, for Java,
+whether to use Spring Boot. To skip the questions, pass answers with `--data`:
+
+```sh
+uvx copier copy --trust --defaults \
+  --data project_name=demo --data project_description="A demo" \
+  --data language=python --data project_kind=library \
+  gh:gnantel/project-template my-project
+```
+
+The new directory is a git repository on `main` with one initial commit. Its
+`.copier-answers.yml` records your answers; keep it committed.
+
+## Publish it on GitHub
+
+The template already creates the `main` branch, so only the remote is left. From
+the project directory, create the GitHub repository, add it as `origin` and push
+`main` in one step:
+
+```sh
+gh repo create <owner>/my-project --private --source . --remote origin --push
+```
+
+GitHub makes the first pushed branch the default, so `main` becomes the default
+branch. If the repository already exists and is empty, add the remote and push
+instead:
+
+```sh
+git remote add origin git@github.com:<owner>/my-project.git
+git push -u origin main
+```
+
+## Update a project
+
+From the project directory, with a clean working tree:
+
+```sh
+uvx copier update --trust
+```
+
+Copier re-applies the template's changes since the version the project was
+generated from, using the saved answers. Review and commit the result.
