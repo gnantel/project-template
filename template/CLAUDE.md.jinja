@@ -21,13 +21,20 @@
 - Lint (Biome, tsc): `just lint`
 - Test: `just test`
 - Lint and test: `just check`
+{%- elif language == 'java' -%}
+- Format: `just fmt`
+- Lint (format check, compile with Error Prone): `just lint`
+- Test: `just test`
+- Lint and test: `just check`
 {%- else -%}
 - Install: TODO
 - Format: TODO
 - Lint: TODO
 - Test: TODO
 {%- endif %}
-{%- if project_kind != 'library' %}
+{%- if language == 'java' and spring_boot and project_kind != 'library' %}
+- Run: `just dev`
+{%- elif project_kind != 'library' %}
 - Run: TODO
 {%- endif %}
 
@@ -40,6 +47,9 @@ finishing a turn (see `.claude/settings.json`).
 {%- elif language == 'typescript' -%}
 Claude formats each edited TypeScript, JavaScript or JSON file with Biome and
 runs `just lint` before finishing a turn (see `.claude/settings.json`).
+{%- elif language == 'java' -%}
+Claude formats each edited `.java` file with `scripts/format-java.sh` and runs
+`just lint` before finishing a turn (see `.claude/settings.json`).
 {%- else -%}
 Automatic formatting and the lint check before finishing a turn are not configured for {{ language }} yet; see
 `.claude/hooks/`.
@@ -61,6 +71,14 @@ and tests together and exposes a small surface.
 - `src/<feature>/`: one directory per feature, with its `*.test.ts` files
   beside the code they test
 - `src/index.ts`: the public surface
+{%- elif language == 'java' -%}
+- `src/main/java/{{ java_package_path }}/<feature>/`: one package per feature
+- `src/test/java/{{ java_package_path }}/<feature>/`: that feature's tests
+{%- if spring_boot %}
+- Each feature package has one `<Concept>Configuration` wiring its plain beans with `@Bean`,
+  a `*Settings` record and the `<concept>.defaults.yaml` beside it. Constructor injection only.
+  `application.yaml` imports the defaults until the `@YamlPropertySource` annotation exists.
+{%- endif %}
 {%- else -%}
 - TODO: describe the feature layout
 {%- endif %}

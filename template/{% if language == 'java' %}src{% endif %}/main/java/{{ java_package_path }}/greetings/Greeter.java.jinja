@@ -1,0 +1,14 @@
+package {{ java_package }}.greetings;
+
+/** Builds greeting messages. */
+{{ '' if spring_boot else 'public ' }}final class Greeter {
+    private final String salutation;
+
+    {{ '' if spring_boot else 'public ' }}Greeter(String salutation) {
+        this.salutation = salutation;
+    }
+
+    {{ '' if spring_boot else 'public ' }}String greet(String name) {
+        return salutation + ", " + name + "!";
+    }
+}

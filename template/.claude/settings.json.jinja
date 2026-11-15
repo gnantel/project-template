@@ -20,6 +20,9 @@
       "Bash(pnpm exec biome:*)",
       "Bash(pnpm exec tsc:*)",
       "Bash(pnpm exec vitest:*)",
+{%- elif language == 'java' %}
+      "Bash(mvn:*)",
+      "Bash(scripts/format-java.sh:*)",
 {%- endif %}
       "Bash(git diff:*)",
       "Bash(git log:*)",

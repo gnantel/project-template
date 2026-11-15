@@ -14,5 +14,8 @@ case "$edited_file" in
 {%- elif language == 'typescript' %}
   *.ts|*.tsx|*.js|*.jsx|*.mjs|*.cjs|*.json|*.jsonc) pnpm exec biome format --write "$edited_file" >/dev/null ;;
 {%- endif %}
+{%- if language == 'java' %}
+  *.java) scripts/format-java.sh "$edited_file" ;;
+{%- endif %}
   *) ;;
 esac

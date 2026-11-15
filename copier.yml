@@ -11,7 +11,7 @@ _tasks:
   - command: "uv run lefthook install"
     when: "{{ language == 'python' }}"
   - command: "mise trust && mise install && mise exec -- lefthook install"
-    when: "{{ language == 'rust' }}"
+    when: "{{ language in ['rust', 'java'] }}"
   - command: "mise exec -- pnpm exec lefthook install"
     when: "{{ language == 'typescript' }}"
 
@@ -45,6 +45,30 @@ spring_boot:
   help: Use Spring Boot?
   default: false
   when: "{{ language == 'java' }}"
+
+java_keywords:
+  type: yaml
+  when: false
+  default: >-
+    [abstract, assert, boolean, break, byte, case, catch, char, class, const,
+    continue, default, do, double, else, enum, extends, "false", final,
+    finally, float, for, goto, if, implements, import, instanceof, int,
+    interface, long, native, new, "null", package, private, protected, public,
+    return, short, static, strictfp, super, switch, synchronized, this, throw,
+    throws, transient, "true", try, void, volatile, while]
+
+java_group_id:
+  type: str
+  help: Maven group id, also the root of the Java package
+  default: com.example
+  when: "{{ language == 'java' }}"
+  validator: >-
+    {% set segments = java_group_id.split('.') -%}
+    {% if not (java_group_id | regex_search('^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$')) -%}
+    Use lowercase dot-separated segments, such as com.example
+    {%- elif segments | select('in', java_keywords) | list -%}
+    Segments cannot be Java keywords, such as class or int
+    {%- endif %}
 
 stdlib_module_names:
   type: yaml
@@ -91,7 +115,7 @@ ci:
   type: bool
   help: Generate a GitHub Actions CI workflow (lint, then test)?
   default: false
-  when: "{{ language in ['python', 'rust', 'typescript'] }}"
+  when: "{{ language in ['python', 'rust', 'typescript', 'java'] }}"
 
 package_name:
   type: str
@@ -106,3 +130,42 @@ package_name:
     {%- else -%}
     {{ name }}
     {%- endif %}
+
+java_package:
+  type: str
+  when: false
+  default: >-
+    {% set name = project_name | lower | regex_replace('[^a-z0-9]+', '') -%}
+    {% set is_unsafe = name[:1] in '0123456789' or name in java_keywords -%}
+    {{ java_group_id }}.{% if not name %}project{% elif is_unsafe %}p{{ name }}{% else %}{{ name }}{% endif %}
+
+java_class_prefix:
+  type: str
+  when: false
+  default: >-
+    {% set name = project_name | regex_replace('[^A-Za-z0-9]+', ' ') | title | replace(' ', '') -%}
+    {% if not name -%}
+    Project
+    {%- elif name[:1] in '0123456789' -%}
+    P{{ name }}
+    {%- elif name in ['Spring', 'SpringBoot'] -%}
+    {{ name }}App
+    {%- else -%}
+    {{ name }}
+    {%- endif %}
+
+java_artifact_id:
+  type: str
+  when: false
+  default: >-
+    {{ project_name | lower | regex_replace('[^a-z0-9]+', '-') | trim('-') or 'project' }}
+
+palantir_java_format_version:
+  type: str
+  when: false
+  default: "2.103.0"
+
+java_package_path:
+  type: str
+  when: false
+  default: "{{ java_package | replace('.', '/') }}"

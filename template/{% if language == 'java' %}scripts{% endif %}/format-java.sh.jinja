@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Formats the given Java files in place with the pinned palantir-java-format native binary, which starts much faster than Maven.
+set -euo pipefail
+
+version="{{ palantir_java_format_version }}"
+base_url="https://repo1.maven.org/maven2/com/palantir/javaformat/palantir-java-format-native/$version"
+
+platform_suffix() {
+  case "$(uname -s)-$(uname -m)" in
+    Linux-x86_64) echo "linux-glibc_x86-64" ;;
+    Linux-aarch64) echo "linux-glibc_aarch64" ;;
+    Darwin-arm64) echo "macos_aarch64" ;;
+    *) echo "No native palantir-java-format for $(uname -s) $(uname -m)" >&2; exit 1 ;;
+  esac
+}
+
+sha256_of() {
+  if command -v sha256sum >/dev/null; then sha256sum "$1" | cut -d' ' -f1; else shasum -a 256 "$1" | cut -d' ' -f1; fi
+}
+
+download_formatter() {
+  local url=$1 target=$2 partial
+  partial=$(mktemp)
+  curl -fsSL "$url" -o "$partial"
+  [ "$(sha256_of "$partial")" = "$(curl -fsSL "$url.sha256")" ] || { echo "Checksum mismatch for $url" >&2; exit 1; }
+  chmod +x "$partial"
+  mkdir -p "$(dirname "$target")"
+  mv "$partial" "$target"
+}
+
+suffix=$(platform_suffix)
+formatter="${XDG_CACHE_HOME:-$HOME/.cache}/palantir-java-format/$version-$suffix"
+[ -x "$formatter" ] || download_formatter "$base_url/palantir-java-format-native-$version-nativeImage-$suffix.bin" "$formatter"
+[ "$#" -eq 0 ] || "$formatter" --palantir --replace "$@"

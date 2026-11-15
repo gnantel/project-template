@@ -1,0 +1,13 @@
+package {{ java_package }}.greetings;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
+/** Tests for building greeting messages. */
+class GreeterTest {
+    @Test
+    void greetAddressesTheGivenName() {
+        assertEquals("Hello, Ada!", new Greeter("Hello").greet("Ada"));
+    }
+}

@@ -1,0 +1,13 @@
+package {{ java_package }}.greetings;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ * Settings for greetings, defaulted in {@code greeting.defaults.yaml}.
+ *
+ * <ul>
+ *   <li>{@code salutation}: the word that opens each greeting
+ * </ul>
+ */
+@ConfigurationProperties("greeting")
+record GreetingSettings(String salutation) {}

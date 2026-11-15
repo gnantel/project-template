@@ -1,0 +1,21 @@
+package {{ java_package }}.greetings;
+
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/** Wires the greetings beans. */
+@Configuration
+@EnableConfigurationProperties(GreetingSettings.class)
+class GreetingConfiguration {
+    private final GreetingSettings settings;
+
+    GreetingConfiguration(GreetingSettings settings) {
+        this.settings = settings;
+    }
+
+    @Bean
+    Greeter greeter() {
+        return new Greeter(settings.salutation());
+    }
+}
