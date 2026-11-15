@@ -22,6 +22,25 @@ uvx copier copy --trust --defaults \
 The new directory is a git repository on `main` with one initial commit. Its
 `.copier-answers.yml` records your answers; keep it committed.
 
+## Publish it on GitHub
+
+The template already creates the `main` branch, so only the remote is left. From
+the project directory, create the GitHub repository, add it as `origin` and push
+`main` in one step:
+
+```sh
+gh repo create <owner>/my-project --private --source . --remote origin --push
+```
+
+GitHub makes the first pushed branch the default, so `main` becomes the default
+branch. If the repository already exists and is empty, add the remote and push
+instead:
+
+```sh
+git remote add origin git@github.com:<owner>/my-project.git
+git push -u origin main
+```
+
 ## Update a project
 
 From the project directory, with a clean working tree:
