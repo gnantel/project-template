@@ -1,0 +1,36 @@
+_subdirectory: template
+_min_copier_version: "9.0.0"
+
+_tasks:
+  - command: "[ -e .git ] || (git init -b main && git add -A && git commit -m 'Initial commit from project-template')"
+
+project_name:
+  type: str
+  help: Project name
+
+project_description:
+  type: str
+  help: One-sentence description of the project
+
+language:
+  type: str
+  help: Programming language
+  choices:
+    - python
+    - typescript
+    - rust
+    - java
+
+project_kind:
+  type: str
+  help: Kind of project
+  choices:
+    - library
+    - application
+    - service
+
+spring_boot:
+  type: bool
+  help: Use Spring Boot?
+  default: false
+  when: "{{ language == 'java' }}"
