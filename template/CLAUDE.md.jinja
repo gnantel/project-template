@@ -55,6 +55,27 @@ Automatic formatting and the lint check before finishing a turn are not configur
 `.claude/hooks/`.
 {%- endif %}
 
+## Length limits
+
+`just lint` fails on functions over {% if language == 'rust' %}100{% else %}50{% endif %} lines and on files over 300 lines.
+
+{% if language == 'python' -%}
+- Functions: ruff `PLR0915` counts statements, not lines, so the limit is set to 48 statements, the closest
+  match to 50 lines.
+- Files: `scripts/check-file-length.sh`, since ruff has no file-length rule.
+{%- elif language == 'rust' -%}
+- Functions: clippy `too_many_lines` counts the lines between a function's braces and skips blank and comment
+  lines, so the threshold in `clippy.toml` is 99, the closest match to 100 lines.
+- Files: `scripts/check-file-length.sh`, since clippy has no file-length rule.
+{%- elif language == 'typescript' -%}
+- Functions: Biome `noExcessiveLinesPerFunction` counts the lines inside the body, so `maxLines` is 48 for a
+  50-line function.
+- Files: Biome `noExcessiveLinesPerFile`.
+{%- elif language == 'java' -%}
+- Functions and files: Checkstyle `MethodLength` and `FileLength` in `checkstyle.xml`, run by Maven in the
+  `validate` phase (Error Prone has no length checks).
+{%- endif %}
+
 ## Layout
 
 Code is organized by feature, never by layer. A feature keeps its code, config

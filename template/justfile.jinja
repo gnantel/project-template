@@ -10,6 +10,7 @@ lint:
     uv run ruff format --check
     uv run ruff check
     uv run pyright
+    scripts/check-file-length.sh '*.py' '*.pyi'
 
 test:
     uv run pytest
@@ -20,6 +21,7 @@ fmt:
 lint:
     cargo fmt --check
     cargo clippy --all-targets -- -D warnings
+    scripts/check-file-length.sh '*.rs'
 
 test:
     if cargo nextest --version >/dev/null 2>&1; then cargo nextest run && cargo test --doc; else cargo test; fi

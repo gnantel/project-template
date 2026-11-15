@@ -18,7 +18,10 @@ dev = ["lefthook", "pyright", "pytest", "ruff"]
 src = ["src", "tests"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "SIM"]
+select = ["E", "F", "I", "UP", "B", "SIM", "PLR0915"]
+
+[tool.ruff.lint.pylint]
+max-statements = 48
 
 [tool.pyright]
 include = ["src", "tests"]
