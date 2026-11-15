@@ -1,0 +1,47 @@
+# {{ project_name }}
+
+{{ project_description }}
+
+## Commands
+
+{% if language == 'python' -%}
+- Install: `uv sync`
+- Format: `just fmt`
+- Lint (format check, ruff, pyright): `just lint`
+- Test: `just test`
+- Lint and test: `just check`
+{%- else -%}
+- Install: TODO
+- Format: TODO
+- Lint: TODO
+- Test: TODO
+{%- endif %}
+{%- if project_kind != 'library' %}
+- Run: TODO
+{%- endif %}
+
+{% if language == 'python' -%}
+Claude formats each edited `.py` or `.pyi` file and runs `just lint` before
+finishing a turn (see `.claude/settings.json`).
+{%- else -%}
+Automatic formatting and the lint check before finishing a turn are not configured for {{ language }} yet; see
+`.claude/hooks/`.
+{%- endif %}
+
+## Layout
+
+Code is organized by feature, never by layer. A feature keeps its code, config
+and tests together and exposes a small surface.
+
+{% if language == 'python' -%}
+- `src/{{ package_name }}/<feature>/`: one directory per feature
+- `tests/<feature>/`: that feature's tests
+{%- else -%}
+- TODO: describe the feature layout
+{%- endif %}
+{%- if project_kind == 'service' %}
+
+## Operations
+
+Metrics, logging and resilience conventions are in `.claude/operational.md`.
+{%- endif %}

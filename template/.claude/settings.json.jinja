@@ -1,0 +1,50 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(just:*)",
+{%- if language == 'python' %}
+      "Bash(uv sync:*)",
+      "Bash(uv run ruff:*)",
+      "Bash(uv run pyright:*)",
+      "Bash(uv run pytest:*)",
+{%- endif %}
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git status:*)",
+      "Bash(git merge-base:*)",
+      "Bash(git rev-parse:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format-edited-file.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lint-before-stop.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+{%- set plugins = [] %}
+{%- if spring_boot %}{% set _ = plugins.append('spring-boot@personal') %}{% endif %}
+{%- if project_kind == 'service' %}{% set _ = plugins.append('operational-readiness@personal') %}{% endif %}
+{%- for plugin in plugins %}
+    "{{ plugin }}": true{{ "," if not loop.last }}
+{%- endfor %}
+  }
+}

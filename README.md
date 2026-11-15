@@ -36,6 +36,10 @@ installed when the project is generated (`uv run lefthook install`). Before each
 commit the staged `.py` files are formatted and linted, and fixes are re-staged. Before each push,
 pyright and pytest must pass. After cloning a project, run `uv run lefthook install` again.
 
+## Claude Code setup
+
+Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python variant has a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
+
 ## Publish it on GitHub
 
 The template already creates the `main` branch, so only the remote is left. From

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Formats the file Claude just edited; reads the PostToolUse event from stdin.
+set -euo pipefail
+
+edited_file=$(jq -r '.tool_input.file_path // empty')
+[ -n "$edited_file" ] && [ -f "$edited_file" ] || exit 0
+
+cd "$CLAUDE_PROJECT_DIR"
+case "$edited_file" in
+{%- if language == 'python' %}
+  *.py|*.pyi) uv run ruff format --quiet "$edited_file" ;;
+{%- endif %}
+  *) ;;
+esac
