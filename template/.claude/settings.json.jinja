@@ -15,6 +15,11 @@
       "Bash(cargo nextest:*)",
       "Bash(cargo test:*)",
       "Bash(rustfmt:*)",
+{%- elif language == 'typescript' %}
+      "Bash(pnpm install:*)",
+      "Bash(pnpm exec biome:*)",
+      "Bash(pnpm exec tsc:*)",
+      "Bash(pnpm exec vitest:*)",
 {%- endif %}
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -47,12 +52,16 @@
       }
     ]
   },
-  "enabledPlugins": {
 {%- set plugins = [] %}
 {%- if spring_boot %}{% set _ = plugins.append('spring-boot@personal') %}{% endif %}
 {%- if project_kind == 'service' %}{% set _ = plugins.append('operational-readiness@personal') %}{% endif %}
+{%- if plugins %}
+  "enabledPlugins": {
 {%- for plugin in plugins %}
     "{{ plugin }}": true{{ "," if not loop.last }}
 {%- endfor %}
   }
+{%- else %}
+  "enabledPlugins": {}
+{%- endif %}
 }
