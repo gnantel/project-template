@@ -33,6 +33,20 @@ lint:
 
 test:
     pnpm exec vitest run
+{%- elif language == 'java' -%}
+fmt:
+    mvn -B -q spotless:apply
+
+lint:
+    mvn -B -q spotless:check test-compile
+
+test:
+    mvn -B -q test
+{%- if spring_boot and project_kind != 'library' %}
+
+dev:
+    mvn -B spring-boot:run
+{%- endif %}
 {%- else -%}
 {% for recipe in ['fmt', 'lint', 'test'] -%}
 {{ recipe }}:

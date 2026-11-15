@@ -10,7 +10,7 @@ uvx copier copy --trust gh:gnantel/project-template my-project
 
 The `--trust` flag is needed because the template runs a task (the initial git commit). Copier asks for the project name, description, language (`python`, `typescript`,
 `rust`, `java`), project kind (`library`, `application`, `service`) and, for Java,
-whether to use Spring Boot. To skip the questions, pass answers with `--data`:
+whether to use Spring Boot and the Maven group id. To skip the questions, pass answers with `--data`:
 
 ```sh
 uvx copier copy --trust --defaults \
@@ -50,13 +50,18 @@ After cloning, run `pnpm install && pnpm exec lefthook install`.
 Generating a TypeScript project needs [mise](https://mise.jdx.dev), which installs the
 Node and pnpm versions in the project's `.mise.toml` for the setup tasks.
 
+Java projects get the same hooks, with lefthook installed by `mise install`. Because Maven starts slowly,
+the pre-commit hook formats staged `.java` files directly with `scripts/format-java.sh` (the native
+palantir-java-format binary, downloaded once into your cache; Linux and macOS arm64). Before each push,
+`mvn spotless:check test` must pass. After cloning, run `lefthook install`.
+
 ## Claude Code setup
 
-Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python, Rust and TypeScript variants have a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
+Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python, Rust, TypeScript and Java variants have a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
 
 ## Optional CI
 
-For Python, Rust and TypeScript projects, the `ci` question (default `false`) adds
+For Python, Rust, TypeScript and Java projects, the `ci` question (default `false`) adds
 `.github/workflows/ci.yml`. A `lint` job runs `just lint` first and the `test`
 job, which needs it, runs `just test`, so a lint failure costs no test minutes.
 

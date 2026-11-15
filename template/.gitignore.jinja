@@ -24,5 +24,10 @@ coverage/
 
 target/
 {%- elif language == 'java' %}
-{# Java ignores go here #}
+
+target/
+*.class
+.classpath
+.project
+.settings/
 {%- endif %}

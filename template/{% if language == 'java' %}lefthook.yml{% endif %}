@@ -1,0 +1,13 @@
+# Git hooks: format staged files directly (Maven starts slowly), Maven checks before push.
+
+pre-commit:
+  jobs:
+    - name: format
+      glob: "*.java"
+      run: scripts/format-java.sh {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: check
+      run: mvn -B -q spotless:check test
