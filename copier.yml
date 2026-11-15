@@ -3,6 +3,8 @@ _min_copier_version: "9.0.0"
 
 _tasks:
   - command: "[ -e .git ] || (git init -b main && git add -A && git commit -m 'Initial commit from project-template')"
+  - command: "uv run lefthook install"
+    when: "{{ language == 'python' }}"
 
 project_name:
   type: str

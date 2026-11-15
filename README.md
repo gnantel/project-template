@@ -29,6 +29,13 @@ Every project has a `justfile` with the same entry points, whatever the language
 Variants add `just dev` when the project has something to run. Run `just --list`
 to see what a project offers.
 
+## Git hooks
+
+Python projects get [lefthook](https://github.com/evilmartians/lefthook) hooks,
+installed when the project is generated (`uv run lefthook install`). Before each
+commit the staged `.py` files are formatted and linted, and fixes are re-staged. Before each push,
+pyright and pytest must pass. After cloning a project, run `uv run lefthook install` again.
+
 ## Publish it on GitHub
 
 The template already creates the `main` branch, so only the remote is left. From
