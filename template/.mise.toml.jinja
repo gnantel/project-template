@@ -2,6 +2,9 @@
 {%- if language == 'python' %}
 python = "3.12"
 uv = "0.13"
+
+[env]
+UV_PYTHON_PREFERENCE = "system"
 {%- elif language == 'typescript' %}
 node = "24"
 pnpm = "12"
