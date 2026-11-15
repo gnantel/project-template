@@ -1,0 +1,11 @@
+[tools]
+{%- if language == 'python' %}
+python = "3.12"
+uv = "0.13"
+{%- elif language == 'typescript' %}
+{# TypeScript tool versions go here #}
+{%- elif language == 'rust' %}
+{# Rust tool versions go here #}
+{%- elif language == 'java' %}
+{# Java tool versions go here #}
+{%- endif %}
