@@ -8,7 +8,7 @@ _tasks:
   - command: "mise trust && mise install && mise exec -- pnpm install"
     when: "{{ language == 'typescript' }}"
   - command: "[ -e .git ] || (git init -b main && git add -A && git commit -m 'Initial commit from project-template')"
-  - command: "uv run lefthook install"
+  - command: "mise trust && mise install && mise exec -- uv run lefthook install"
     when: "{{ language == 'python' }}"
   - command: "mise trust && mise install && mise exec -- lefthook install"
     when: "{{ language in ['rust', 'java'] }}"
