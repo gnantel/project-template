@@ -38,7 +38,7 @@ pyright and pytest must pass. After cloning a project, run `uv run lefthook inst
 
 ## Claude Code setup
 
-Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python variant has a formatter wired into the format hook. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
+Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python variant has a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
 
 ## Publish it on GitHub
 
