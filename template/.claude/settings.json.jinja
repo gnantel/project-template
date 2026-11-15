@@ -7,6 +7,14 @@
       "Bash(uv run ruff:*)",
       "Bash(uv run pyright:*)",
       "Bash(uv run pytest:*)",
+{%- elif language == 'rust' %}
+      "Bash(cargo build:*)",
+      "Bash(cargo check:*)",
+      "Bash(cargo clippy:*)",
+      "Bash(cargo fmt:*)",
+      "Bash(cargo nextest:*)",
+      "Bash(cargo test:*)",
+      "Bash(rustfmt:*)",
 {%- endif %}
       "Bash(git diff:*)",
       "Bash(git log:*)",

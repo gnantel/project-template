@@ -36,13 +36,20 @@ installed when the project is generated (`uv run lefthook install`). Before each
 commit the staged `.py` files are formatted and linted, and fixes are re-staged. Before each push,
 pyright and pytest must pass. After cloning a project, run `uv run lefthook install` again.
 
+Rust projects get the same hooks, installed when the project is generated if
+`lefthook` is on your `PATH` (`mise install` provides it; otherwise run
+`lefthook install` once it is). Before each commit the staged `.rs` files are
+formatted with rustfmt and re-staged. Before each push, `cargo clippy -D
+warnings` and the tests (`cargo nextest` when installed, else `cargo test`)
+must pass.
+
 ## Claude Code setup
 
-Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python variant has a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
+Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python and Rust variants have a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
 
 ## Optional CI
 
-For Python projects, the `ci` question (default `false`) adds
+For Python and Rust projects, the `ci` question (default `false`) adds
 `.github/workflows/ci.yml`. A `lint` job runs `just lint` first and the `test`
 job, which needs it, runs `just test`, so a lint failure costs no test minutes.
 
