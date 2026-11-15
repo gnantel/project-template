@@ -47,6 +47,8 @@ TypeScript projects get the same hooks, installed after `pnpm install` when the
 project is generated. Before each commit Biome formats and lints the staged
 files and re-stages fixes; before each push, `tsc --noEmit` and vitest must pass.
 After cloning, run `pnpm install && pnpm exec lefthook install`.
+Generating a TypeScript project needs [mise](https://mise.jdx.dev), which installs the
+Node and pnpm versions in the project's `.mise.toml` for the setup tasks.
 
 ## Claude Code setup
 
