@@ -36,9 +36,9 @@ installed when the project is generated (`uv run lefthook install`). Before each
 commit the staged `.py` files are formatted and linted, and fixes are re-staged. Before each push,
 pyright and pytest must pass. After cloning a project, run `uv run lefthook install` again.
 
-Rust projects get the same hooks, installed when the project is generated if
-`lefthook` is on your `PATH` (`mise install` provides it; otherwise run
-`lefthook install` once it is). Before each commit the staged `.rs` files are
+Rust projects get the same hooks, installed when the project is generated
+(`mise install`, which provides the Rust toolchain and lefthook, then
+`mise exec -- lefthook install`). Before each commit the staged `.rs` files are
 formatted with rustfmt and re-staged. Before each push, `cargo clippy -D
 warnings` and the tests (`cargo nextest` when installed, else `cargo test`)
 must pass.

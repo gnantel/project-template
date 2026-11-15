@@ -5,7 +5,7 @@ _tasks:
   - command: "[ -e .git ] || (git init -b main && git add -A && git commit -m 'Initial commit from project-template')"
   - command: "uv run lefthook install"
     when: "{{ language == 'python' }}"
-  - command: "if command -v lefthook >/dev/null; then lefthook install; else echo 'lefthook not found: install it (mise install), then run lefthook install' >&2; fi"
+  - command: "mise trust && mise install && mise exec -- lefthook install"
     when: "{{ language == 'rust' }}"
 
 project_name:
