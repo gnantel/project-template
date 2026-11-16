@@ -7,7 +7,12 @@ rule:
   kind: module
   not:
     has:
-      nthChild: 1
       kind: expression_statement
+      nthChild:
+        position: 1
+        ofRule:
+          not:
+            kind: comment
       has:
         kind: string
+        regex: '^[rRuU]{0,2}("|'')'
