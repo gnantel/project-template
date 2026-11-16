@@ -7,7 +7,7 @@
 {% if language == 'python' -%}
 - Install: `uv sync`
 - Format: `just fmt`
-- Lint (format check, ruff, pyright): `just lint`
+- Lint (format check, ruff, pyright, ast-grep rules in `rules/`): `just lint`
 - Test: `just test`
 - Lint and test: `just check`
 {%- elif language == 'rust' -%}
@@ -81,7 +81,8 @@ Automatic formatting and the lint check before finishing a turn are not configur
 `just lint` fails on a source file that does not start with a comment stating its purpose.
 
 {% if language == 'python' -%}
-- ruff `D100` (modules) and `D104` (packages): a module docstring, including in tests and `__init__.py`.
+- ruff `D100` (modules) and `D104` (packages), plus an ast-grep rule in `rules/file-header/` because ruff skips
+  private modules (`_name.py`): a module docstring, including in tests and `__init__.py`.
 {%- elif language == 'rust' -%}
 - ast-grep rule `rules/file-header/`: a `//!` comment as the first thing in the file, including in tests,
   `build.rs` and `mod.rs`. Generated files are not exempt: keep them out of the repository or add their
