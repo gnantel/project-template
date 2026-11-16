@@ -1,0 +1,12 @@
+# Forbids @VisibleForTesting: production visibility is not widened for tests.
+id: java-visible-for-testing
+language: java
+severity: error
+message: "Do not widen visibility for tests; test through the public interface."
+rule:
+  any:
+    - kind: marker_annotation
+    - kind: annotation
+  has:
+    field: name
+    regex: '(^|\.)VisibleForTesting$'

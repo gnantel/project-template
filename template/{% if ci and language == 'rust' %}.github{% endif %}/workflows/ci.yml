@@ -20,6 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: extractions/setup-just@v4
+      - uses: jdx/mise-action@v5
+        with:
+          install_args: ast-grep
       - uses: Swatinem/rust-cache@v2
       - run: just lint
 
