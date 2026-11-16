@@ -95,6 +95,10 @@ Automatic formatting and the lint check before finishing a turn are not configur
 - Checkstyle `MissingJavadocType`: a Javadoc comment on every class, interface, enum and record of any
   visibility, including in tests. Files without a type (`package-info.java`) are not checked.
 {%- endif %}
+{%- if language in ['python', 'rust', 'typescript'] %}
+
+ast-grep does not scan zero-byte files, so an empty file passes: give it its header.
+{%- endif %}
 
 ## Layout
 
