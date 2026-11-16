@@ -38,22 +38,8 @@
 - Run: TODO
 {%- endif %}
 
-{% if language == 'python' -%}
-Claude formats each edited `.py` or `.pyi` file and runs `just lint` before
-finishing a turn (see `.claude/settings.json`).
-{%- elif language == 'rust' -%}
-Claude formats each edited `.rs` file with rustfmt and runs `just lint` before
-finishing a turn (see `.claude/settings.json`).
-{%- elif language == 'typescript' -%}
-Claude formats each edited TypeScript, JavaScript or JSON file with Biome and
-runs `just lint` before finishing a turn (see `.claude/settings.json`).
-{%- elif language == 'java' -%}
-Claude formats each edited `.java` file with `scripts/format-java.sh` and runs
-`just lint` before finishing a turn (see `.claude/settings.json`).
-{%- else -%}
-Automatic formatting and the lint check before finishing a turn are not configured for {{ language }} yet; see
-`.claude/hooks/`.
-{%- endif %}
+Claude formats each edited file with `just fmt-files` and runs `just lint` before finishing a turn (see
+`.claude/settings.json`). Both hooks run through `mise exec --`.
 
 ## Length limits
 

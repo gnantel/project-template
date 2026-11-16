@@ -6,7 +6,4 @@ already_retrying=$(jq -r '.stop_hook_active // false') || exit 1
 [ "$already_retrying" = "true" ] && exit 0
 
 cd "$CLAUDE_PROJECT_DIR"
-{%- if language in ['python', 'rust', 'typescript', 'java'] %}
-[ -f justfile ] || exit 0
-just lint >&2 || exit 2
-{%- endif %}
+mise exec -- just lint >&2 || exit 2

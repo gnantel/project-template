@@ -31,33 +31,23 @@ to see what a project offers.
 
 ## Git hooks
 
-Python projects get [lefthook](https://github.com/evilmartians/lefthook) hooks,
-installed when the project is generated (`uv run lefthook install`). Before each
-commit the staged `.py` files are formatted and linted, and fixes are re-staged. Before each push,
-pyright and pytest must pass. After cloning a project, run `uv run lefthook install` again.
+Every project gets [lefthook](https://github.com/evilmartians/lefthook) hooks, installed when the project is
+generated (`mise exec -- lefthook install`) and identical in every language. They call `just`, through
+`mise exec --`, so they work from a GUI git client or any shell where mise is installed but not activated
+(`mise` only has to be on PATH). Before each commit, `just fmt-files` formats the staged files and re-stages
+them; the recipe ignores file types the language does not format. Before each push, `just check` (lint, then
+test) must pass. After cloning a project, run `mise install && mise exec -- lefthook install`.
 
-Rust projects get the same hooks, installed when the project is generated
-(`mise install`, which provides the Rust toolchain and lefthook, then
-`mise exec -- lefthook install`). Before each commit the staged `.rs` files are
-formatted with rustfmt and re-staged. Before each push, `cargo clippy -D
-warnings` and the tests (`cargo nextest` when installed, else `cargo test`)
-must pass.
+Each variant's `fmt-files` uses its own formatter: ruff (Python), Biome (TypeScript), `rustfmt` (Rust) and
+`scripts/format-java.sh`, the native palantir-java-format binary downloaded once into your cache (Linux and
+macOS arm64), because Maven starts slowly (Java).
 
-TypeScript projects get the same hooks, installed after `pnpm install` when the
-project is generated. Before each commit Biome formats and lints the staged
-files and re-stages fixes; before each push, `tsc --noEmit` and vitest must pass.
-After cloning, run `pnpm install && pnpm exec lefthook install`.
-Generating a TypeScript project needs [mise](https://mise.jdx.dev), which installs the
-Node and pnpm versions in the project's `.mise.toml` for the setup tasks.
-
-Java projects get the same hooks, with lefthook installed by `mise install`. Because Maven starts slowly,
-the pre-commit hook formats staged `.java` files directly with `scripts/format-java.sh` (the native
-palantir-java-format binary, downloaded once into your cache; Linux and macOS arm64). Before each push,
-`mvn spotless:check test` must pass. After cloning, run `lefthook install`.
+The project's `.mise.toml` provides `just`, lefthook and the language's tools, so generating a project needs
+[mise](https://mise.jdx.dev).
 
 ## Claude Code setup
 
-Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits, and a hook that runs `just lint` before Claude finishes a turn. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python, Rust, TypeScript and Java variants have a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
+Generated projects include `.claude/settings.json`: a permission allowlist for the project's tooling and read-only git, a hook that formats each file Claude edits (`just fmt-files`) and a hook that runs `just lint` before Claude finishes a turn, both through `mise exec --` like the git hooks. Services also enable `operational-readiness@personal` and get a `.claude/operational.md` stub; Spring Boot projects enable `spring-boot@personal`. The hooks need `jq`, and so far only the Python, Rust, TypeScript and Java variants have a formatter and the lint check wired into the hooks. A `CLAUDE.md` skeleton lists the commands and layout. Both plugins come from the `personal` marketplace, which must be installed on your machine.
 
 ## Optional CI
 

@@ -1,0 +1,12 @@
+# Git hooks through just (run by mise, so no shell activation is needed): format staged files before commit, lint and test before push.
+
+pre-commit:
+  jobs:
+    - name: format
+      run: mise exec -- just fmt-files {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: check
+      run: mise exec -- just check
