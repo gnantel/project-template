@@ -1,0 +1,12 @@
+# Requires every Rust file to start with its purpose as a `//!` or `/*! */` comment.
+id: rust-missing-file-header
+language: rust
+severity: error
+message: "Start the file with a //! comment that states its purpose."
+rule:
+  kind: source_file
+  not:
+    has:
+      nthChild: 1
+      has:
+        kind: inner_doc_comment_marker

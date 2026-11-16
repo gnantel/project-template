@@ -1,0 +1,18 @@
+# Requires every Python file to start with its purpose as a docstring, private modules included (ruff skips those).
+id: python-missing-file-header
+language: python
+severity: error
+message: "Start the file with a docstring that states its purpose."
+rule:
+  kind: module
+  not:
+    has:
+      kind: expression_statement
+      nthChild:
+        position: 1
+        ofRule:
+          not:
+            kind: comment
+      has:
+        kind: string
+        regex: '^[rRuU]{0,2}("|'')'
