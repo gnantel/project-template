@@ -1,0 +1,14 @@
+# Requires every TypeScript file to start with its purpose as a /** ... */ block comment.
+id: tsx-missing-file-header
+language: tsx
+severity: error
+message: "Start the file with a /** ... */ comment that states its purpose."
+ignores:
+  - "**/*.d.ts"
+rule:
+  kind: program
+  not:
+    has:
+      nthChild: 1
+      kind: comment
+      regex: '^/\*\*'

@@ -31,6 +31,7 @@ fmt:
     pnpm exec biome check --write
 
 lint:
+    ast-grep scan
     pnpm exec biome check
     pnpm exec tsc --noEmit
 

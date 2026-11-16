@@ -7,6 +7,9 @@
     <property name="max" value="300"/>
   </module>
   <module name="TreeWalker">
+    <module name="MissingJavadocType">
+      <property name="scope" value="private"/>
+    </module>
     <module name="MethodLength">
       <property name="max" value="50"/>
     </module>
