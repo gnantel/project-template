@@ -2,18 +2,13 @@ _subdirectory: template
 _min_copier_version: "9.0.0"
 
 _tasks:
-  # TypeScript runs two tasks around the shared initial commit: pnpm install comes
-  # first so pnpm-lock.yaml is in that commit, and lefthook install comes after it
+  # TypeScript installs its packages before the shared initial commit so that
+  # pnpm-lock.yaml is in that commit. lefthook install comes after the commit
   # because it needs the .git directory the shared task creates.
   - command: "mise trust && mise install && mise exec -- pnpm install"
     when: "{{ language == 'typescript' }}"
   - command: "[ -e .git ] || (git init -b main && git add -A && git commit -m 'Initial commit from project-template')"
-  - command: "mise trust && mise install && mise exec -- uv run lefthook install"
-    when: "{{ language == 'python' }}"
   - command: "mise trust && mise install && mise exec -- lefthook install"
-    when: "{{ language in ['rust', 'java'] }}"
-  - command: "mise exec -- pnpm exec lefthook install"
-    when: "{{ language == 'typescript' }}"
 
 project_name:
   type: str

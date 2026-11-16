@@ -1,10 +1,18 @@
-# Entry points shared by every project: fmt, lint (check only), test, check.
+# Entry points shared by every project: fmt, fmt-files (format only the given files,
+# ignoring other file types; used by the git and Claude hooks), lint (check only), test, check.
 # `dev` is defined only by variants that have something to run.
 
 {% if language == 'python' -%}
 fmt:
     uv run ruff format
     uv run ruff check --fix
+
+[positional-arguments]
+@fmt-files *files:
+    count=$#; \
+    for file in "$@"; do case "$file" in *.py|*.pyi) set -- "$@" "$file" ;; esac; done; \
+    shift "$count"; \
+    [ "$#" -eq 0 ] || uv run ruff format --quiet "$@"
 
 lint:
     uv run ruff format --check
@@ -18,6 +26,13 @@ test:
 fmt:
     cargo fmt
 
+[positional-arguments]
+@fmt-files *files:
+    count=$#; \
+    for file in "$@"; do case "$file" in *.rs) set -- "$@" "$file" ;; esac; done; \
+    shift "$count"; \
+    [ "$#" -eq 0 ] || rustfmt --config skip_children=true "$@"
+
 lint:
     ast-grep scan
     cargo fmt --check
@@ -30,6 +45,13 @@ test:
 fmt:
     pnpm exec biome check --write
 
+[positional-arguments]
+@fmt-files *files:
+    count=$#; \
+    for file in "$@"; do case "$file" in *.ts|*.tsx|*.js|*.jsx|*.mjs|*.cjs|*.json|*.jsonc) set -- "$@" "$file" ;; esac; done; \
+    shift "$count"; \
+    [ "$#" -eq 0 ] || pnpm exec biome format --write --no-errors-on-unmatched --log-level=none "$@"
+
 lint:
     pnpm exec biome check
     pnpm exec tsc --noEmit
@@ -40,12 +62,24 @@ test:
 fmt:
     mvn -B -q spotless:apply
 
+[positional-arguments]
+@fmt-files *files:
+    count=$#; \
+    for file in "$@"; do case "$file" in *.java) set -- "$@" "$file" ;; esac; done; \
+    shift "$count"; \
+    [ "$#" -eq 0 ] || scripts/format-java.sh "$@"
+
 lint:
     ast-grep scan
     mvn -B -q spotless:check test-compile
 
 test:
     mvn -B -q test
+
+# Unlike the shared `check: lint test`, one Maven run avoids paying Maven's startup twice.
+check:
+    ast-grep scan
+    mvn -B -q spotless:check test
 {%- if spring_boot and project_kind != 'library' %}
 
 dev:
@@ -58,5 +92,7 @@ dev:
 
 {% endfor -%}
 {%- endif %}
+{%- if language != 'java' %}
 
 check: lint test
+{%- endif %}
